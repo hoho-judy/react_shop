@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Context1 } from './../App.js';
 
 function TabContent({tab}) {
+  let {stock} = useContext(Context1); // 부모가 넘긴 Context 받는 방법
+
   // if (props.tab === 0) {
   //   return <div>내용1</div>;
   // } else if (props.tab === 1) {
@@ -13,8 +16,7 @@ function TabContent({tab}) {
   let [fade, setFade] = useState('');
 
   useEffect(()=>{
-    let t = setTimeout(()=>{ setFade('end') }, 100)
-    
+    let t = setTimeout(()=>{ setFade('end') }, 100);
     return() => {
       clearTimeout(t);
       setFade('');
@@ -22,7 +24,8 @@ function TabContent({tab}) {
   }, [tab])
 
   return (<div className={`start ${fade}`}>
-    {[<div>내용1</div>,<div>내용2</div>,<div>내용3</div>,][tab]}
+    재고
+    {[<div>{stock[0]}</div>,<div>{stock[1]}</div>,<div>{stock[2]}</div>,][tab]}
     </div>);
 }
 

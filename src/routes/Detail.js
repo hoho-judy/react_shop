@@ -1,9 +1,11 @@
 /* eslint-disable */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 import TabContent from './TabContent.js';
+
+import { Context1 } from './../App.js';
 
 const Button = styled.button`
   background: ${ props => props.bg }; // button 컴포넌트 쓸 때 색상을 파라미터로 받는 방법
@@ -14,6 +16,9 @@ const Button = styled.button`
 const NewBtn = styled.button(Button);
 
 function Detail(props) {
+
+  let {stock} = useContext(Context1); // 부모가 넘긴 Context 받는 방법
+
   let [sale, setSale] = useState(true);
   let [text, setText] = useState('');
   let {id} = useParams(); // 라우터 url에 파라미터 붙어서 올 때 여기에 담겨져서 옴
@@ -92,7 +97,7 @@ function Detail(props) {
         </Nav.Item>
       </Nav>
 
-      <TabContent tab={tab}/>
+      <TabContent tab={tab} shoes={props.shoes}/>
     </div>
   );
 }

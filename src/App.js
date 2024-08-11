@@ -1,6 +1,6 @@
 /* eslint-disable */
 import "./App.css";
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 import Card from './components/Card.js';0
 import Detail from './routes/Detail.js';
@@ -11,11 +11,15 @@ import datas from './data.js';
 import datas2 from './data2.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import Cart from './routes/Cart.js';
+
+export let Context1 = createContext()
 
 function App() {
 
   let [shoes, setShoes] = useState(datas);
   let navigate = useNavigate(); // 페이지 이동을 도와주는 hook
+  let [stock] = useState([10, 11, 12]); // 3가지 상품의 각 재고 
 
   return (
     <div className="App">
@@ -74,7 +78,11 @@ function App() {
           </>
         } />
     
-        <Route path="/detail/:id" element={<Detail shoes={shoes}></Detail>}></Route>
+        <Route path="/detail/:id" element={
+          <Context1.Provider value={{ stock }}>
+            <Detail shoes={shoes}></Detail>
+          </Context1.Provider>
+        }></Route>
 
         {/* Nested Routes 사용 방법 */}
         {/* /about/member나 /about/location 으로 이동할 때 아래처럼 쓰면 됨 */}
@@ -88,6 +96,10 @@ function App() {
           <Route path="one" element={<div>첫 주문 시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일기념 쿠폰 받기</div>} />
         </Route>
+
+        {/* 장바구니 페이지 만들기 */}
+        <Route path="/cart" element={<Cart />}></Route>
+
         {/* <Route path="*" element={<div>없는페이지에요</div>} />  */}
       </Routes>
       
