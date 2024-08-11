@@ -57,18 +57,18 @@ function App() {
               setShoes(copyShoes);
 
               // 2. 데이터 보낼때(post)
-              axios.post('/요청url', {name: 'judy',});
+              // axios.post('/요청url', {name: 'judy',});
 
               // 3. 동시에 ajax 요청 여러개 하려면
-              Promise.all([axios.get('url1')], [axios.get('url2')])
-              .then(res => console.log(res))
-              .catch(err => console.log(err))
+              // Promise.all([axios.get('url1')], [axios.get('url2')])
+              // .then(res => console.log(res))
+              // .catch(err => console.log(err))
 
               // 4. fetch는 json을 가져오면 그냥 json이기 때문에 변환을 해줘야한다.
               // axios는 문자열을 알아서 object array로 변환해주기 때문에 편리함 
-              fetch('/url')
-              .then(res => res.json())
-              .then(data => {})
+              // fetch('/url')
+              // .then(res => res.json())
+              // .then(data => {})
 
             }}>더보기</button>
           </>
