@@ -2,7 +2,7 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { changeName, plusAge } from "./../store/useSlice.js";
-import { plusCount } from "./../store/cartSlice.js";
+import { plusCount, minusCount, deleteItem } from "./../store/cartSlice.js";
 
 function Cart() {
   // redux에 등록된 모든 state를 가져와서 쓸 때 꺼내쓰는 방법
@@ -34,6 +34,7 @@ function Cart() {
             <th>상품명</th>
             <th>수량</th>
             <th>변경하기</th>
+            <th>삭제하기</th>
           </tr>
         </thead>
         <tbody>
@@ -46,11 +47,28 @@ function Cart() {
                 <td>
                   <button
                     onClick={() => {
-                      // dispatch(changeName());
                       dispatch(plusCount(cart.id));
                     }}
                   >
                     +
+                  </button>
+                  &nbsp;
+                  <button
+                    onClick={() => {
+                      dispatch(minusCount(cart.id));
+                    }}
+                  >
+                    -
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => {
+                      // dispatch(changeName());
+                      dispatch(deleteItem(cart.id));
+                    }}
+                  >
+                    삭제
                   </button>
                 </td>
               </tr>
