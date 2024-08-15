@@ -46,7 +46,7 @@ function Detail(props) {
       alert('그러지마세요');
       setText('');
     }
-
+  
     // useEffect가 실행되기 전에 뭘 실행시키고 싶으면 그걸 return()안에 작성(clean up function)
     // 기존에 돌아가던 타이머가 있다면 클리어 하고 새로 시작하는게 맞으므로 이런건 클린업 함수 안에 작성
     // 클린업 함수는 mount 될 때 실행 X, unMount될 때는 실행됨.
@@ -57,13 +57,24 @@ function Detail(props) {
     }
   }, [text])
 
-
+  
   // find, filter 차이 : find는 조건에 충족하는 원소를 찾으면 원소 반환 후 바로 종료(없으면 undefined 반환)
   // filter는 조건을 충족하는 원소가 1개만 있더라도 끝까지 돌고, 배열로 반환
   let filterdShoes = props.shoes.find(shoe => {
     return shoe.id == id; 
   })
+
+  // useEffect() 안에 작성해야 한 번에 3개씩 저장되지 않고 1개씩만 저장됨
+  useEffect(()=>{
+    let obj = localStorage.getItem('watched');
+    obj = JSON.parse(obj);
+    obj.push(filterdShoes);
+
+    obj = [...new Set(obj)]; // 중복 제거 ! Array.from(new Set(obj));도 동일함.
+    localStorage.setItem('watched', JSON.stringify(obj));
+  }, [])
   
+
   return (
     <div className={`container start ${fade2}`}>
       {

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import "./App.css";
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 import Card from './components/Card.js';0
 import Detail from './routes/Detail.js';
@@ -12,6 +12,7 @@ import datas2 from './data2.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import Cart from './routes/Cart.js';
+import { useQuery } from "react-query";
 
 export let Context1 = createContext()
 
@@ -20,6 +21,21 @@ function App() {
   let [shoes, setShoes] = useState(datas);
   let navigate = useNavigate(); // 페이지 이동을 도와주는 hook
   let [stock] = useState([10, 11, 12]); // 3가지 상품의 각 재고 
+  let [view, setView] = useState(0); // 더보기 버튼 제어용
+
+  // localStorage에 저장하기 위한 훅
+  useEffect(()=>{
+    let watched = localStorage.getItem('watched');
+    if(watched == undefined) {
+      localStorage.setItem('watched', JSON.stringify([]));
+    }
+  }, [])
+
+  // react-query로 ajax 요청하기
+  let result = useQuery('user', ()=>{
+    return axios.get('https://codingapple1.github.io/userdata.json')
+    .then((res) => {return res.data})
+  })
 
   return (
     <div className="App">
@@ -31,6 +47,12 @@ function App() {
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link href="#features">Products</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/cart') }}>Cart</Nav.Link>
+          </Nav>
+          <Nav className="ms-quto" style={{color:'white'}}>
+            반가워요! &nbsp;
+            { result.isLoading && '로딩중...' }
+            { result.error && '에러남' }
+            { result.data && result.data.name }
           </Nav>
         </Container>
       </Navbar>
@@ -56,9 +78,17 @@ function App() {
               // datas2.forEach((newShoe)=>{
               //   copyShoes.push(newShoe);
               // })
+       
+              if(view > 0) {
+                alert('더 이상 상품이 없습니다.');
+                return;
+              }
+              
               // 아래처럼 배열을 분해해서 다시 합칠 수 있음
               let copyShoes = [...shoes, ...datas2];
               setShoes(copyShoes);
+              view++;
+              setView(view);
 
               // 2. 데이터 보낼때(post)
               // axios.post('/요청url', {name: 'judy',});
