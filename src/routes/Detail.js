@@ -8,6 +8,8 @@ import { Context1 } from './../App.js';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { order } from "./../store/cartSlice.js";
+import { useLike } from '../hooks/like.js';
+
 
 const Button = styled.button`
   background: ${ props => props.bg }; // button 컴포넌트 쓸 때 색상을 파라미터로 받는 방법
@@ -18,6 +20,7 @@ const Button = styled.button`
 const NewBtn = styled.button(Button);
 
 function Detail(props) {
+  let [like, addLike] = useLike(); // 커스텀 훅 사용 방법
 
   let {stock} = useContext(Context1); // 부모가 넘긴 Context 받는 방법
 
@@ -57,7 +60,6 @@ function Detail(props) {
     }
   }, [text])
 
-  
   // find, filter 차이 : find는 조건에 충족하는 원소를 찾으면 원소 반환 후 바로 종료(없으면 undefined 반환)
   // filter는 조건을 충족하는 원소가 1개만 있더라도 끝까지 돌고, 배열로 반환
   let filterdShoes = props.shoes.find(shoe => {
@@ -92,8 +94,12 @@ function Detail(props) {
           />
         </div>
         <div className="col-md-6">
+          
           <input type="text" onChange={(e) => { setText(e.target.value) }}></input>
-          <h4 className="pt-5">{filterdShoes.title}</h4>
+          <h4 className="pt-5">{filterdShoes.title}</h4> 
+
+          {like} <span onClick={()=>{ addLike() }}>❤️</span>
+
           <p>상품 ID : {filterdShoes.id}</p>
           <p>{filterdShoes.content}</p>
           <p>{filterdShoes.price}</p>
